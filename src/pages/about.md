@@ -22,8 +22,6 @@ I have been in the digital health space for over 6 years now and have had the op
 
 **B. Build delightful products that stand the test of scale:** I have a panache for coding. The systems I have designed with my team and platform modules we programmed have scaled to support more than 1 million users. As an engineering leader, I was accountable for the development, quality assurance, DevOps and technical support of the platform. I have played a key role in setting up the engineering team and processes in my organization. Just like any other engineer, I have broken production. I learned from my mistakes and I have continuously upskilled myself to solve new engineering challenges.
 
-While I have loved my current role and am proud of the journey we have taken from a start-up to a scale-up, I felt it was time for me to move on and explore new challenges and opportunities in digital health.
-
 This personal blog is my attempt to narrate my learnings and the challenges I have faced in the realm of digital healthcare and engineering.
 
 ## Credits
