@@ -1,0 +1,209 @@
+---
+title: 03. Understanding EXPLAIN & ANALYZE
+author: Mithun James
+pubDatetime: 2023-06-16T10:00:00Z
+postSlug: understanding-query-planning
+featured: false
+draft: false
+tags:
+  - databases
+  - scalingup
+description: In this article, we will see how to use EXPLAIN and ANALYZE and different types of scans done by PostgreSQL.
+---
+
+### Prerequisite
+
+This is the third chapter of the DB engineering series.
+As a prerequisite ensure that you read the earlier chapters.
+
+- [01. Prologue to Databases](#)
+- [02. Database Indexes](#)
+
+### EXPLAIN and ANALYZE
+
+Consider a simple query like
+
+```sql
+SELECT * from people WHERE id = 200;
+```
+
+If we want to understand the execution plan of the above statement, we can prefix the statement with EXPLAIN.
+
+```sql
+learning_test=> EXPLAIN SELECT * FROM people WHERE id = 200;
+                                QUERY PLAN
+---------------------------------------------------------------------------
+ Index Scan using people_pkey on people  (cost=0.42..8.44 rows=1 width=17)
+   Index Cond: (id = 200)
+(2 rows)
+```
+
+The query plan shows how the tables and indexes will be scanned by the database.
+In the above output, we can see that index `people_pkey` is scanned to get the rows.
+We will look at different types of 'scans' below.
+The important part of the EXPLAIN output is the cost.
+The values are arbitrary, it signifies the amount of page fetches the DB has to perform.
+When tweaking and optimizing SQL statements, look out for how the cost changes.
+
+`cost=X..Y`
+
+The cost section shows 2 values. The first one (X) is the startup cost and the second one (Y) is the total cost.
+Most of the time, you need to look at how the total cost changes.
+
+The EXPLAIN statement takes more options.
+Coupling EXPLAIN with ANALYZE will actually execute the query and provide statistics of the execution.
+
+```sql
+learning_test=> EXPLAIN ANALYZE SELECT * FROM people WHERE id = 200;
+                                                     QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------
+ Index Scan using people_pkey on people  (cost=0.42..8.44 rows=1 width=17) (actual time=0.616..0.620 rows=1 loops=1)
+   Index Cond: (id = 200)
+ Planning Time: 0.077 ms
+ Execution Time: 0.646 ms
+(4 rows)
+```
+
+You can now see additional time parameters have been added to the output.
+
+### Sequential Scan
+
+Let's see the query plan for `SELECT` of everything from the table `people`.
+
+```sql
+learning_test=> EXPLAIN ANALYZE SELECT * FROM people;
+                                                    QUERY PLAN
+------------------------------------------------------------------------------------------------------------------
+ Seq Scan on people  (cost=0.00..16329.00 rows=1000000 width=17) (actual time=0.009..74.236 rows=1000000 loops=1)
+ Planning Time: 0.053 ms
+ Execution Time: 115.517 ms
+(3 rows)
+```
+
+The database has to literally scan the whole table to get the output.
+It goes through every `page` in the `heap` and all rows are fetched.
+This type of scan is one of the simplest but also the costliest scans for large tables.
+
+### Index Scan
+
+At the start of the article, we did a query where we found the row matching ID = 200.
+
+```sql
+learning_test=> EXPLAIN ANALYZE SELECT * FROM people WHERE id = 200;
+                                                     QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------
+ Index Scan using people_pkey on people  (cost=0.42..8.44 rows=1 width=17) (actual time=0.616..0.620 rows=1 loops=1)
+   Index Cond: (id = 200)
+ Planning Time: 0.077 ms
+ Execution Time: 0.646 ms
+(4 rows)
+```
+
+Let's see how this output is different from the sequential scan.
+First, the index `people_pkey` is used. Postgres has automatically created an index for the primary key of the table (ID).
+
+`rows=1`
+
+The estimated number of rows returned by the query is mentioned here.
+As expected, only one row matches the unique primary key ID = 200.
+Note that the sequential scan query had `rows=1000000` which is the entire table.
+
+### Index Only Scan
+
+Now, consider the below query.
+Well, this might sound stupid. We are selecting the id along with the condition of the same ID.
+
+```sql
+learning_test=> SELECT id FROM people WHERE id = 200;
+ id
+-----
+ 200
+(1 row)
+```
+
+Let's check the query plan for this query.
+
+```sql
+learning_test=> EXPLAIN ANALYSE SELECT id FROM people WHERE id = 200;
+                                                       QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using people_pkey on people  (cost=0.42..4.44 rows=1 width=4) (actual time=0.022..0.023 rows=1 loops=1)
+   Index Cond: (id = 200)
+   Heap Fetches: 0
+ Planning Time: 0.072 ms
+ Execution Time: 0.039 ms
+(5 rows)
+```
+
+From the execution time, you can see how this query will give the result in a 'split-millisecond'.
+Index-only scans are the fastest queries.
+Here DB does not have to go to the heap to fetch any data.
+Everything that the query needs resides within the index itself.
+
+### Bitmap Scans
+
+Let's revisit the query from [chapter 02](#) and fetch all the people who are 40 years old.
+
+```sql
+learning_test=> EXPLAIN ANALYSE SELECT * FROM people WHERE age = 40;
+                                                           QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on people  (cost=109.79..6861.53 rows=9467 width=17) (actual time=1.633..9.113 rows=10176 loops=1)
+   Recheck Cond: (age = 40)
+   Heap Blocks: exact=5045
+   ->  Bitmap Index Scan on idx_age_people  (cost=0.00..107.43 rows=9467 width=0) (actual time=0.931..0.931 rows=10176 loops=1)
+         Index Cond: (age = 40)
+ Planning Time: 0.081 ms
+ Execution Time: 9.672 ms
+(7 rows)
+```
+
+Alright, that output looks complex, but let's break it down.
+
+> Pro tip: Always read the EXPLAIN output bottom up!
+
+Here is what happens in the query plan.
+
+1. Build a bitmap of the rows we want for age = 40 (Bitmap Index Scan)
+2. Look those rows up in the table (Bitmap Heap Scan) and check to make sure age = 40
+
+Depending on the query predicates, Postgres builds bitmaps (a data structure) on the fly that contains information about where to check for matching rows.
+Since we have an index on age (idx_age_people), Postgres first checks the index.
+This is followed by fetching the relevant rows from the heap.
+
+Now, let's drop the index and see what happens.
+
+```sql
+learning_test=> DROP INDEX idx_age_people;
+DROP INDEX
+```
+
+And here is the output:
+
+```sql
+learning_test=> EXPLAIN ANALYSE SELECT * FROM people WHERE age = 40;
+                                                        QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..13484.03 rows=9467 width=17) (actual time=0.326..90.243 rows=10176 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Parallel Seq Scan on people  (cost=0.00..11537.33 rows=3945 width=17) (actual time=0.030..70.117 rows=3392 loops=3)
+         Filter: (age = 40)
+         Rows Removed by Filter: 329941
+ Planning Time: 0.139 ms
+ Execution Time: 90.756 ms
+(8 rows)
+```
+
+1. Postgres had to spawn multiple workers to do a parallel sequential scan of the table.
+2. From the cost and time parameters, you can see how the performance of the query dropped significantly.
+
+### Conclusion
+
+Indexes will significantly improve the reading of data from the tables.
+And that is important. Indexes improve only the read performance.
+Indexes will slow down writes as Postgres should rebalance the B-tree on upserts.
+Too many unused indexes will hamper your table performance.
+Adding an index might not be the silver bullet to solve your performance issues when working with large tables.
+Use them judiciously. When working with large tables, there are other strategies like partitioning to improve performance which we will discuss next.
+Read about DB partitions [here](#).

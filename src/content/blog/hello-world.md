@@ -3,7 +3,8 @@ author: Mithun James
 pubDatetime: 2023-05-21T09:57:52.737Z
 title: Hello World!
 postSlug: hello-world
-featured: true
+featured: false
+draft: true
 ogImage: ""
 tags:
   - release
