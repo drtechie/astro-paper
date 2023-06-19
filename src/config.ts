@@ -3,7 +3,7 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://drtechie.dev/",
   author: "Mithun James",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "I am Dr Mithun James - a medical doctor turned engineering leader. I am interested in applying my interdisciplinary skill set in medicine and information technology to improve patient outcomes. I find tremendous joy in architecting scalable technical solutions for real-world healthcare challenges.",
   title: "${musings}",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
