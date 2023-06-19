@@ -1,14 +1,14 @@
 ---
-title: 01. Prologue to Databases
+title: 01. Understanding database storage
 author: Mithun James
 pubDatetime: 2023-06-15T10:00:00Z
-postSlug: prologue-to-databases
+postSlug: understanding-database-storage
 featured: true
-draft: false
+draft: true
 tags:
   - databases
   - scalingup
-description: A prologue to understanding how data is structured and organized in the databases before we delve into advanced topics. We will be focussing on PostgreSQL.
+description: A prologue to understanding how data is structured and organized in the databases before we delve into advanced topics. Database optimizes the storage of data in various files and data structures to ensure that queries run most effectively. In this article, we will see how PostgreSQL stores data. Please note that the concept is very similar with other RDBMS like MySQL.
 ---
 
 If you are planning a career in software development as a backend or a full-stack engineer, understanding how databases work and how to write efficient SQL queries will give you a good headstart in developing systems that will scale. In this database engineering series written by [Sawali](https://www.linkedin.com/in/sawali-kale/) & me, we will delve into some concepts and general guidelines that can be followed to architect efficient data querying.
@@ -37,25 +37,25 @@ docker exec -it postgres psql -U postgres
 ## Terminology
 
 Once you have understood how data is stored, indexed and organized by PostgreSQL, it becomes easier to figure out why certain SQL queries return results faster than others.
-Here are some building blocks of Postgres - some terms to have knowledge of to understand the upcoming articles.
+Here are some building blocks of Postgres - some terms to know of to understand the upcoming articles.
 
 ### Items
 
 In a relational database system, we always prepare entities with certain attributes.
 An item is a single attribute of the row. For example, an employee John Doe can have a `salary` of 10_000.
-The salary is an attribute or item. A set of attributes or items are combined together to make a `row` or `tuple`.
+The salary is an attribute or item. A set of attributes or items are combined to make a `row` or `tuple`.
 The sequence in which items are saved within a row is dependent on the schema of the table.
 
 ![An item that has an attribute value](/assets/db/item.png "An item that has an attribute value")
 
-### Tuples
+### Rows/Tuples
 
-A relational database system contains tables. A table has attributes and rows. A tuple also known as a row is a group of attribute values of the table.
+A relational database system contains tables. A table has attributes (columns) and rows. A tuple also known as a row is a group of attribute values of the table.
 For example, a table that has `(name, age, salary)` as attributes can have `(John Doe, 30, 10_000)` as a tuple or row.
 `(Mithun, 30, INT_MAX)` is another tuple.
 Each row or tuple is assigned a `row_id` by the DBMS.
 
-![A tuple is a group of items](/assets/db/tuple.png "A tuple is a group of items")
+![A tuple/row is a group of items](/assets/db/tuple.png "A tuple/row is a group of items")
 
 ### Pages
 
@@ -63,7 +63,7 @@ PostgreSQL stores data in multiple `blocks`. Each block has a size of 8KB.
 These blocks are otherwise called `pages`. The pages contain multiple tuples/rows.
 The amount of tuples that a page can hold depends on the size of the tuple.
 A page consists of a header and data region.
-The tuples are written from bottom to left in a page's data region.
+The tuples are written from bottom-right towards left in a page's data region.
 The header holds the information of identifiers that point to each tuple.
 
 ![Page layout](/assets/db/page.png "Page layout")
