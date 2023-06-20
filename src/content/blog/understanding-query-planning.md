@@ -4,7 +4,7 @@ author: Mithun James
 pubDatetime: 2023-06-16T10:00:00Z
 postSlug: understanding-query-planning
 featured: false
-draft: true
+draft: false
 tags:
   - databases
   - scalingup

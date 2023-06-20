@@ -1,0 +1,197 @@
+---
+title: 05. Database Sharding
+author: Mithun James
+pubDatetime: 2023-06-17T10:00:00Z
+postSlug: database-sharding
+featured: true
+draft: false
+tags:
+  - databases
+  - scalingup
+description: Database sharding is a technique for dividing a large database into smaller chunks or shards. This can improve performance and scalability. Database sharding comes with its own pros and cons which we will discuss in this article.
+---
+
+This is the fifth chapter of the DB engineering series.
+You can read the previous chapters by following the links below.
+
+- [01. Understanding database storage](#)
+- [02. Database Indexes](#)
+- [03. Understanding query planning](#)
+- [04. Partitioning](#)
+
+When an application database keeps growing, one of the techniques to improve performance is database sharding.
+We can vertically scale the database instance, however, there are limits to this.
+In sharding, we split the data into multiple database servers.
+
+### Sharding vs Partitioning
+
+Sharding and partitioning are both techniques for dividing a large database into smaller chunks.
+However, there are some key differences between the two approaches.
+In partitioning, the data is split into multiple tables, all of them present in a **single server**.
+
+![Partitioning](/assets/db/partition.png "Partitioning")
+
+In the case of shards, the data is split across multiple servers.
+Sharding is more complex to implement and manage and possibly should be the last resort to scaling up.
+
+![Sharding](/assets/db/sharding.png "Sharding")
+
+### Vertical and horizontal sharding
+
+Vertical sharding divides the data in a database across multiple servers based on the type of data.
+For example, one server might store all of the customer data, while another server might store all of the product data.
+This can improve performance by allowing each server to specialize in a particular type of data.
+
+Horizontal sharding divides the data in a database across multiple servers based on some common attribute, such as the user ID or the product ID.
+For example, a database that stores customer data might be sharded by customer ID.
+
+### Sharding types
+
+There are different approaches to sharding data. We will look at 3 different types.
+
+#### Range sharding
+
+Range-based sharding divides the data in a database into ranges and then assigns each range to a different server.
+For example, a database that stores customer data might be range-based sharded by customer PIN code, so that all of the customers in a particular PIN code are stored on the same server.
+
+#### Key/hash sharding
+
+Hash-based sharding divides the data in a database using a hash function and then assigns each hash value to a different server.
+It is also known as key-based sharding. The shard key is passed through a hash function that decides which shard the data must be allocated to.
+
+One of the simplest hash functions is to use the modulus operator with the number of shards.
+
+`Shard = ID % Number of Shards`
+
+#### Geosharding
+
+Geo-based sharding divides the data in a database based on geographic location and then assigns each location to a different server. This can be useful for databases that need to perform queries on data that is geographically distributed.
+
+### Shard key
+
+The column or the field on which the shard is based is called the `shard key`.
+An ideal shard key must have high `cardinality` and very well-distributed `frequency`.
+
+The cardinality of a shard key is the number of unique values that the shard key can have. A high cardinality shard key will result in a more evenly distributed shard key, while a low cardinality shard key will result in a less evenly distributed shard key. In general, it is best to choose a shard key with a high cardinality.
+
+Frequency distribution: The shard key should be evenly distributed across the data set. This is important for performance, as it ensures that each shard is handling a roughly equal amount of data.
+
+An uneven shard key will result in uneven distribution of the data.
+This will result in certain database servers always running 'hot' also known as hotspots.
+Such instances might require re-sharding.
+
+### Hands-on
+
+In the following scripts, we will implement a simple key-based sharding.
+We will add a city_id to our earlier `people` table that contained name, age and salary.
+Depending on the city_id of the person, the data will be split into 3 databases.
+
+First, let's create 3 Postgres instances.
+Each of these instances will run on a different port.
+
+```bash
+# create first shard that runs on port 5432
+docker run -e POSTGRES_PASSWORD=password -d -p 5432:5432 --name postgres_s1 postgres
+docker exec -it postgres_s1 psql -U postgres -c "CREATE TABLE people (
+  id serial PRIMARY KEY,
+  name text,
+  age int,
+  salary int,
+  city_id int
+);"
+
+# create second shard that runs on port 5433
+docker run -e POSTGRES_PASSWORD=password -d -p 5433:5432 --name postgres_s2 postgres
+docker exec -it postgres_s2 psql -U postgres -c "CREATE TABLE people (
+  id serial PRIMARY KEY,
+  name text,
+  age int,
+  salary int,
+  city_id int
+);"
+
+# create third shard that runs on port 5434
+docker run -e POSTGRES_PASSWORD=password -d -p 5434:5432 --name postgres_s3 postgres
+docker exec -it postgres_s3 psql -U postgres -c "CREATE TABLE people (
+  id serial PRIMARY KEY,
+  name text,
+  age int,
+  salary int,
+  city_id int
+);"
+```
+
+Now we have 3 database instances of PostgreSQL running at 3 different ports - 5432, 5433, 5434.
+Since we have 3 servers, we will take the result of city_id % 3.
+The result of this calculation will decide the database into which the row has to be inserted.
+
+![Shard based on city_id](/assets/db/shards.png "Shard based on city_id")
+
+Here is a simple Python script that will insert values based on `modulus % 3 of city_id` of the person.
+
+```python
+# Import the necessary modules
+import psycopg2 # pip3 install psycopg2-binary
+import random
+import string
+
+# Connect to the PostgreSQL instances
+conn1 = psycopg2.connect(host='localhost', port=5432, database='postgres', user='postgres', password='password')
+conn2 = psycopg2.connect(host='localhost', port=5433, database='postgres', user='postgres', password='password')
+conn3 = psycopg2.connect(host='localhost', port=5434, database='postgres', user='postgres', password='password')
+conns = {
+    0: conn1,
+    1: conn2,
+    2: conn3
+}
+
+# Generate 1000 tuples of random data
+names = []
+ages = []
+salaries = []
+city_ids = []
+
+for i in range(1000):
+    name = ''.join(random.choice(string.ascii_lowercase) for _ in range(5))
+    age = random.randint(18, 100)
+    salary = random.randint(30000, 100000)
+    city_id = random.randint(0, 999)
+
+    names.append(name)
+    ages.append(age)
+    salaries.append(salary)
+    city_ids.append(city_id)
+
+# Iterate through the array and insert the data into the PostgreSQL instances
+for i in range(1000):
+    modulus = city_ids[i] % 3
+    conn = conns[modulus]
+    cur = conn.cursor()
+    cur.execute("INSERT INTO people (name, age, salary, city_id) VALUES (%s, %s, %s, %s)", (names[i], ages[i], salaries[i], city_ids[i]))
+    conn.commit()
+
+# Close the PostgreSQL connections
+conn1.close()
+conn2.close()
+conn3.close()
+```
+
+We have now split 1000 rows of data into 3 different databases.
+In a production setup, these databases will reside on different machines/servers.
+
+### Before Sharding
+
+Sharding comes with a lot of hurdles - application complexity, cost of infrastructure, maintenance and operational difficulties and so on.
+What can be done to improve performance before sharding?
+
+1. **Question the application design and check for bottle-necks**. Investigate slow-running queries, add indexes if necessary and optimize the data model.
+2. **Caching**. Some amount of caching of frequently used data can relieve many performance bottlenecks.
+3. **Replicas**. The application may benefit from adding more replicas. For example, the read queries can be routed to different servers.
+4. **Vertical scaling**. Move the database to a larger server to handle the load.
+
+### Conclusion
+
+In summary, database sharding is a method for breaking up a huge database into smaller chunks.
+This could enhance the database's scalability and performance.
+Sharding, however, can also make the database more complex and difficult to manage.
+Therefore, before introducing sharding, it is crucial to thoroughly weigh its advantages and disadvantages.

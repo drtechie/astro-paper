@@ -4,11 +4,11 @@ author: Mithun James
 pubDatetime: 2023-06-15T10:00:00Z
 postSlug: understanding-database-storage
 featured: true
-draft: true
+draft: false
 tags:
   - databases
   - scalingup
-description: A prologue to understanding how data is structured and organized in the databases before we delve into advanced topics. Database optimizes the storage of data in various files and data structures to ensure that queries run most effectively. In this article, we will see how PostgreSQL stores data. Please note that the concept is very similar with other RDBMS like MySQL.
+description: A prologue to understanding how data is structured and organized in the databases before we delve into advanced topics. Database optimizes the storage of data in various files and data structures to ensure that queries run most effectively. In this article, we will see how PostgreSQL stores data. Please note that the concept is very similar to other RDBMS like MySQL.
 ---
 
 If you are planning a career in software development as a backend or a full-stack engineer, understanding how databases work and how to write efficient SQL queries will give you a good headstart in developing systems that will scale. In this database engineering series written by [Sawali](https://www.linkedin.com/in/sawali-kale/) & me, we will delve into some concepts and general guidelines that can be followed to architect efficient data querying.
