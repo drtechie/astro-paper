@@ -16,14 +16,17 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@astrojs/mdx": "^0.19.7",
     "@astrojs/rss": "^2.4.1",
     "@resvg/resvg-js": "^2.4.1",
     "astro": "^2.4.5",
+    "dompurify": "^3.0.3",
     "fuse.js": "^6.6.2",
     "github-slugger": "^2.0.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^8.0.1",
     "satori": "^0.8.1",
+    "snarkdown": "^2.0.0",
     "tailwindcss": "^3.3.2"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 title: 03. Understanding EXPLAIN & ANALYZE
 author: Mithun James
 pubDatetime: 2023-06-16T10:00:00Z
-postSlug: understanding-query-planning
+postSlug: 03-understanding-query-planning
 featured: false
 draft: false
 tags:
@@ -11,13 +11,25 @@ tags:
 description: In this article, we will see how to use EXPLAIN and ANALYZE and different types of scans done by PostgreSQL.
 ---
 
+import Quiz from "../../components/quiz";
+
 ### Prerequisite
 
 This is the third chapter of the DB engineering series.
 As a prerequisite ensure that you read the earlier chapters.
 
-- [01. Prologue to Databases](#)
-- [02. Database Indexes](#)
+- <a href="/posts/01-understanding-database-storage">
+    01. Understanding database storage
+  </a>
+- <a href="https://theoutlier.dev/blog/02-database-indexes" target="_blank">
+    02. Database Indexes
+  </a>
+- <a href="#">03. Understanding EXPLAIN & ANALYZE</a>
+- <a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">
+    04. Partitioning
+  </a>
+- <a href="/posts/05-database-sharding">05. Database sharding</a>
+- ...more articles coming soon
 
 ### EXPLAIN and ANALYZE
 
@@ -207,3 +219,34 @@ Too many unused indexes will hamper your table performance.
 Adding an index might not be the silver bullet to solve your performance issues when working with large tables.
 Use them judiciously. When working with large tables, there are other strategies like partitioning to improve performance which we will discuss next.
 Read about DB partitions [here](#).
+
+<Quiz
+  quiz={{
+    quizTitle: "React Quiz Component Demo",
+    quizSynopsis:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim",
+    nrOfQuestions: "4",
+    questions: [
+      {
+        question:
+          "How can you access the state of a component from inside of a member function?",
+        questionType: "text",
+        questionPic: "https://dummyimage.com/600x400/000/fff&text=X",
+        answerSelectionType: "single",
+        answers: [
+          "this.getState()",
+          "this.prototype.stateValue",
+          "this.state",
+          "this.values",
+        ],
+        correctAnswer: "3",
+        messageForCorrectAnswer: "Correct answer. Good job.",
+        messageForIncorrectAnswer: "Incorrect answer. Please try again.",
+        explanation:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        point: "20",
+      },
+    ],
+  }}
+  client:load
+/>

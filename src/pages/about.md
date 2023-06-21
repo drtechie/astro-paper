@@ -26,4 +26,5 @@ This personal blog is my attempt to narrate my learnings and the challenges I ha
 
 ## Credits
 
-This theme is a fork of [satnaing/astro-paper](https://github.com/satnaing/astro-paper)
+- This theme is a fork of [satnaing/astro-paper](https://github.com/satnaing/astro-paper).
+- The quiz component is adapted from [wingkwong/react-quiz-component](https://github.com/wingkwong/react-quiz-component/)

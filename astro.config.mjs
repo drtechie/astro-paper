@@ -1,9 +1,10 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
-import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
 // https://astro.build/config
@@ -17,6 +18,7 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
+    mdx(),
   ],
   markdown: {
     remarkPlugins: [
