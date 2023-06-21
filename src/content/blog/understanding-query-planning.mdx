@@ -18,18 +18,22 @@ import Quiz from "../../components/quiz";
 This is the third chapter of the DB engineering series.
 As a prerequisite ensure that you read the earlier chapters.
 
-- <a href="/posts/01-understanding-database-storage">
-    01. Understanding database storage
-  </a>
-- <a href="https://theoutlier.dev/blog/02-database-indexes" target="_blank">
-    02. Database Indexes
-  </a>
-- <a href="#">03. Understanding EXPLAIN & ANALYZE</a>
-- <a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">
-    04. Partitioning
-  </a>
-- <a href="/posts/05-database-sharding">05. Database sharding</a>
-- ...more articles coming soon
+<a href="/posts/01-understanding-database-storage">
+  01. Understanding database storage
+</a>
+<a href="https://theoutlier.dev/blog/02-database-indexes" target="_blank">
+  02. Database Indexes
+</a>
+<a href="#">
+  03. Understanding EXPLAIN & ANALYZE
+</a>
+<a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">
+  04. Partitioning
+</a>
+<a href="/posts/05-database-sharding">
+  05. Database sharding
+</a>
+...more articles coming soon
 
 ### EXPLAIN and ANALYZE
 
@@ -218,7 +222,7 @@ Indexes will slow down writes as Postgres should rebalance the B-tree on upserts
 Too many unused indexes will hamper your table performance.
 Adding an index might not be the silver bullet to solve your performance issues when working with large tables.
 Use them judiciously. When working with large tables, there are other strategies like partitioning to improve performance which we will discuss next.
-Read about DB partitions [here](#).
+Read about DB partitions <a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">here</a>.
 
 <Quiz
   quiz={{

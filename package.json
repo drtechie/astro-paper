@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
-    "format:check": "prettier --plugin-search-dir=. --check .",
+    "format:check": "prettier --plugin-search-dir=. --debug-check .",
     "format": "prettier --plugin-search-dir=. --write .",
     "cz": "cz",
     "prepare": "husky install",

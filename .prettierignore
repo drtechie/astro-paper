@@ -1,5 +1,7 @@
 # Ignore everything
 /*
+*.mdx
+*.md
 
 # Except these files & folders
 !/src
