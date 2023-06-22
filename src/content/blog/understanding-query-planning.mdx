@@ -214,16 +214,6 @@ learning_test=> EXPLAIN ANALYSE SELECT * FROM people WHERE age = 40;
 1. Postgres had to spawn multiple workers to do a parallel sequential scan of the table.
 2. From the cost and time parameters, you can see how the performance of the query dropped significantly.
 
-### Conclusion
-
-Indexes will significantly improve the reading of data from the tables.
-And that is important. Indexes improve only the read performance.
-Indexes will slow down writes as Postgres should rebalance the B-tree on upserts.
-Too many unused indexes will hamper your table performance.
-Adding an index might not be the silver bullet to solve your performance issues when working with large tables.
-Use them judiciously. When working with large tables, there are other strategies like partitioning to improve performance which we will discuss next.
-Read about DB partitions <a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">here</a>.
-
 <Quiz
   quiz={{
   "quizTitle": "DB Query Planning Quiz",
@@ -292,3 +282,13 @@ Read about DB partitions <a href="https://theoutlier.dev/blog/04-database-partit
     }
   ]
 }} showInstantFeedback={true} client:load />
+
+### Conclusion
+
+Indexes will significantly improve the reading of data from the tables.
+And that is important. Indexes improve only the read performance.
+Indexes will slow down writes as Postgres should rebalance the B-tree on upserts.
+Too many unused indexes will hamper your table performance.
+Adding an index might not be the silver bullet to solve your performance issues when working with large tables.
+Use them judiciously. When working with large tables, there are other strategies like partitioning to improve performance which we will discuss next.
+Read about DB partitions <a href="https://theoutlier.dev/blog/04-database-partitions" target="_blank">here</a>.
