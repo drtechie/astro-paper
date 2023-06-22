@@ -10,6 +10,7 @@ tags:
   - scalingup
 description: Database sharding is a technique for dividing a large database into smaller chunks or shards. This can improve performance and scalability. Database sharding comes with its own pros and cons which we will discuss in this article.
 ---
+import Quiz from "../../components/quiz";
 
 This is the fifth chapter of the DB engineering series.
 You can read the previous chapters by following the links below.
@@ -200,6 +201,61 @@ What can be done to improve performance before sharding?
 2. **Caching**. Some amount of caching of frequently used data can relieve many performance bottlenecks.
 3. **Replicas**. The application may benefit from adding more replicas. For example, the read queries can be routed to different servers.
 4. **Vertical scaling**. Move the database to a larger server to handle the load.
+
+<Quiz
+  quiz={{
+  "quizTitle": "DB Sharding Quiz",
+  "quizSynopsis": "Let's have a quick knowledge check of what you have learned.",
+  "nrOfQuestions": "4",
+  "questions": [
+   {
+      "question": "What is the difference between database sharding and database replication?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "Sharding distributes data across multiple servers, while replication creates identical copies of data on multiple servers",
+        "Sharding improves database security, while replication improves database performance",
+        "Sharding is applicable only to relational databases, while replication is applicable to both relational and NoSQL databases",
+        "Sharding splits a database vertically, while replication splits a database horizontally"
+      ],
+      "correctAnswer": "1",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "What is database sharding?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "A backup strategy for databases",
+        "A method of partitioning a database across multiple servers",
+        "A technique to encrypt database data",
+        "A process of indexing database tables"
+      ],
+      "correctAnswer": "2",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "What is the primary goal of database sharding?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "Increasing database security",
+        "Improving database performance and scalability",
+        "Reducing database storage requirements",
+        "Simplifying database administration"
+      ],
+      "correctAnswer": "2",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    }
+  ]
+}}
+client:load />
 
 ### Conclusion
 

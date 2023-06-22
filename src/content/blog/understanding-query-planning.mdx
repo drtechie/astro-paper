@@ -226,31 +226,69 @@ Read about DB partitions <a href="https://theoutlier.dev/blog/04-database-partit
 
 <Quiz
   quiz={{
-    quizTitle: "React Quiz Component Demo",
-    quizSynopsis:
-      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim",
-    nrOfQuestions: "4",
-    questions: [
-      {
-        question:
-          "How can you access the state of a component from inside of a member function?",
-        questionType: "text",
-        questionPic: "https://dummyimage.com/600x400/000/fff&text=X",
-        answerSelectionType: "single",
-        answers: [
-          "this.getState()",
-          "this.prototype.stateValue",
-          "this.state",
-          "this.values",
-        ],
-        correctAnswer: "3",
-        messageForCorrectAnswer: "Correct answer. Good job.",
-        messageForIncorrectAnswer: "Incorrect answer. Please try again.",
-        explanation:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        point: "20",
-      },
-    ],
-  }}
-  client:load
-/>
+  "quizTitle": "DB Query Planning Quiz",
+  "quizSynopsis": "Let's have a quick knowledge check of what you have learned.",
+  "nrOfQuestions": "3",
+  "questions": [
+    {
+      "question": "EXPLAIN is used in a database to:",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "Execute a query",
+        "Analyze query performance",
+        "Explain the purpose of a table",
+        "Create a new table"
+      ],
+      "correctAnswer": "2",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "The purpose of EXPLAIN ANALYZE in a database is to:",
+      "questionType": "text",
+      "answerSelectionType": "multiple",
+      "answers": [
+        "Analyze the performance of a query",
+        "Optimize the database schema",
+        "Generate statistical information about tables and indexes",
+        "Execute a complex data analysis query"
+      ],
+      "correctAnswer": ["1", "3"],
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "Which of the following statements about ANALYZE is true?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "ANALYZE optimizes the query execution plan for better performance",
+        "ANALYZE provides recommendations for index creation",
+        "ANALYZE generates the query execution plan without executing the query",
+        "ANALYZE updates the statistical information used by the query planner"
+      ],
+      "correctAnswer": "4",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "In the context of query optimization, the term \"cost\" refers to:",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "The amount of data stored in a table",
+        "The number of columns in a database",
+        "The execution time and resource usage of a query",
+        "The complexity of the SQL syntax used in a query"
+      ],
+      "correctAnswer": "3",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    }
+  ]
+}} client:load />

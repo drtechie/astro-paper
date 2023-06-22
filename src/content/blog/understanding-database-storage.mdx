@@ -10,6 +10,7 @@ tags:
   - scalingup
 description: A prologue to understanding how data is structured and organized in the databases before we delve into advanced topics. Database optimizes the storage of data in various files and data structures to ensure that queries run most effectively. In this article, we will see how PostgreSQL stores data. The concept is very similar to other RDBMS like MySQL.
 ---
+import Quiz from "../../components/quiz";
 
 If you are planning a career in software development as a backend or a full-stack engineer, understanding how databases work and how to write efficient SQL queries will give you a good headstart in developing systems that will scale. In this database engineering series written by <a href="https://www.linkedin.com/in/sawali-kale/" target="_blank">Sawali</a> & me, we will delve into some concepts and general guidelines that can be followed to architect efficient data querying.
 
@@ -88,6 +89,74 @@ Postgres will look at the index if present and the heap where rows are present i
 
 The relationship between tuples, heaps, and pages is important for understanding how PostgreSQL stores data.
 By understanding this relationship, you can better understand how PostgreSQL queries work and how to optimize your queries for performance.
+
+<Quiz
+  quiz={{
+  "quizTitle": "DB Storage Quiz",
+  "quizSynopsis": "Let's have a quick knowledge check of what you have learned.",
+  "nrOfQuestions": "4",
+  "questions": [
+    {
+      "question": "What is a database heap?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "A collection of pages that store the data for a database table.",
+        "A collection of tuples that store the data for a database table.",
+        "A collection of tables that store the data for a database.",
+        "A collection of indexes that store the data for a database table."
+      ],
+      "correctAnswer": "1",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "What is a page?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "A variable-size unit of storage in a database",
+        "A fixed-size unit of storage in a database"
+      ],
+      "correctAnswer": "2",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "What is a tuple?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "A column in a database table",
+        "A page in a database heap",
+        "A row in a database table",
+        "A collection of pages in a database heap"
+      ],
+      "correctAnswer": "3",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    },
+    {
+      "question": "What is the purpose of the header section in a database page?",
+      "questionType": "text",
+      "answerSelectionType": "single",
+      "answers": [
+        "To store metadata about the table's columns",
+        "To store metadata about the page itself",
+        "To store primary key values of the tuples in the page",
+        "To store indexes for efficient query processing"
+      ],
+      "correctAnswer": "2",
+      "messageForCorrectAnswer": "Correct answer. Good job.",
+      "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
+      "point": "10"
+    }
+  ]
+}}
+client:load />
 
 Next, we will learn about database indexes and how they improve query performance.
 Click <a href="https://theoutlier.dev/blog/02-database-indexes" target="_blank">here</a> to read.
