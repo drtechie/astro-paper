@@ -30,6 +30,7 @@ const InstantFeedback = function ({
       {incorrectAnswer && showInstantFeedback && (
         <div className="alert incorrect">
           {renderMessageForIncorrectAnswer(question)}
+          <Explanation question={question} isResultPage={false} />
         </div>
       )}
       {correctAnswer && showInstantFeedback && (

@@ -252,16 +252,6 @@ const Core = function ({
     <div className="questionWrapper">
       {!endQuiz && (
         <div className="questionWrapperBody">
-          <div className="questionModal">
-            <InstantFeedback
-              question={question}
-              showInstantFeedback={showInstantFeedback}
-              correctAnswer={correctAnswer}
-              incorrectAnswer={incorrectAnswer}
-              onQuestionSubmit={onQuestionSubmit}
-              userAnswer={[...userInput].pop()}
-            />
-          </div>
           <div>
             {appLocale.question} {currentQuestionIndex + 1}:
           </div>
@@ -298,6 +288,16 @@ const Core = function ({
               </button>
             </div>
           )}
+          <div className="questionModal">
+            <InstantFeedback
+              question={question}
+              showInstantFeedback={showInstantFeedback}
+              correctAnswer={correctAnswer}
+              incorrectAnswer={incorrectAnswer}
+              onQuestionSubmit={onQuestionSubmit}
+              userAnswer={[...userInput].pop()}
+            />
+          </div>
         </div>
       )}
       {endQuiz &&
