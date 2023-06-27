@@ -55,6 +55,15 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           Read more about me.
         </LinkButton>
       </p>
+      <p>
+        <LinkButton
+          className="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
+          href="https://calendly.com/drtechie/coffee-chat"
+          target="_blank"
+        >
+          Book a ☕ Chat
+        </LinkButton>
+      </p>
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
